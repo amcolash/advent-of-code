@@ -1,13 +1,16 @@
-import { cpSync, existsSync, mkdirSync, readFileSync, writeFileSync } from 'fs';
+import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'fs';
 import { join } from 'path';
 import { getData } from './data';
 
-if (process.argv.length !== 3) throw 'usage: new [day_name]';
+// Get current day in EST
+const currentDay = new Date(new Date().toLocaleDateString('en-US', { timeZone: 'America/New_York' })).getDate();
 
-const day = process.argv[2];
+const day = process.argv[2] || currentDay.toString();
 const dir = join(__dirname, '../', day);
 const templateFile = join(__dirname, 'template.ts');
 const template = readFileSync(templateFile).toString();
+
+console.log(`Creating files for day ${day}`);
 
 if (!existsSync(dir)) mkdirSync(dir);
 
