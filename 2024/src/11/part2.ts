@@ -13,19 +13,6 @@ const blinks = 75;
 
 const lookup: { [key: string]: number[] } = {};
 
-// generate lookup table of the first 500,000 numbers to a depth of 40
-console.log('generating lookup');
-for (let i = 0; i < 500000; i++) {
-  if (i % 5000 === 0) console.log(i);
-
-  lookup[i] = [];
-  for (let d = 0; d < 40; d++) {
-    lookup[i][d] = recursiveDepthCount(i, d);
-  }
-}
-
-console.log('lookup generation complete');
-
 function recursiveDepthCount(stone: number, depth: number): number {
   if (lookup[stone]?.[depth]) {
     return lookup[stone][depth];
@@ -38,15 +25,34 @@ function recursiveDepthCount(stone: number, depth: number): number {
 
   const numDigits = stone.toString().length;
 
-  if (stone === 0) return recursiveDepthCount(1, depth - 1);
-  else if (numDigits % 2 === 0) {
+  if (stone === 0) {
+    const result = recursiveDepthCount(1, depth - 1);
+
+    lookup[1] = lookup[1] || [];
+    lookup[1][depth - 1] = result;
+
+    return result;
+  } else if (numDigits % 2 === 0) {
     const middle = numDigits / 2;
     const left = Number(stone.toString().substring(0, middle));
     const right = Number(stone.toString().substring(middle));
 
-    return recursiveDepthCount(left, depth - 1) + recursiveDepthCount(right, depth - 1);
+    const leftResult = recursiveDepthCount(left, depth - 1);
+    lookup[left] = lookup[left] || [];
+    lookup[left][depth - 1] = leftResult;
+
+    const rightResult = recursiveDepthCount(right, depth - 1);
+    lookup[right] = lookup[right] || [];
+    lookup[right][depth - 1] = rightResult;
+
+    return leftResult + rightResult;
   } else {
-    return recursiveDepthCount(stone * 2024, depth - 1);
+    const result = recursiveDepthCount(stone * 2024, depth - 1);
+
+    lookup[stone * 2024] = lookup[stone * 2024] || [];
+    lookup[stone * 2024][depth - 1] = result;
+
+    return result;
   }
 }
 
