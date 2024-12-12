@@ -54,6 +54,11 @@ export class Vector {
     return new Vector(this.x, this.y);
   }
 
+  /** Convert a Vector to a Point */
+  toPoint(): Point {
+    return { x: this.x, y: this.y };
+  }
+
   toString() {
     return `[${this.x}, ${this.y}]`;
   }
