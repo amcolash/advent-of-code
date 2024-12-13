@@ -9,7 +9,7 @@ const lines = data.trim().split('\n');
 type Region = { label: string; points: Point[]; area: number; perimeter: number };
 
 const regions: Region[] = [];
-const visited: string[] = [];
+const visited: Set<string> = new Set<string>();
 
 const map: string[][] = [];
 
@@ -28,19 +28,19 @@ function findRegion(point: Point): Point[] {
 
   const shape: Point[] = [];
   shape.push(point);
-  visited.push(`${x}|${y}`);
+  visited.add(`${x}|${y}`);
 
   const up = { x, y: y - 1 };
-  if (map[up.y]?.[up.x] === label && !visited.includes(`${up.x}|${up.y}`)) shape.push(...findRegion(up));
+  if (map[up.y]?.[up.x] === label && !visited.has(`${up.x}|${up.y}`)) shape.push(...findRegion(up));
 
   const down = { x, y: y + 1 };
-  if (map[down.y]?.[down.x] === label && !visited.includes(`${down.x}|${down.y}`)) shape.push(...findRegion(down));
+  if (map[down.y]?.[down.x] === label && !visited.has(`${down.x}|${down.y}`)) shape.push(...findRegion(down));
 
   const left = { x: x - 1, y };
-  if (map[left.y][left.x] === label && !visited.includes(`${left.x}|${left.y}`)) shape.push(...findRegion(left));
+  if (map[left.y][left.x] === label && !visited.has(`${left.x}|${left.y}`)) shape.push(...findRegion(left));
 
   const right = { x: x + 1, y };
-  if (map[right.y][right.x] === label && !visited.includes(`${right.x}|${right.y}`)) shape.push(...findRegion(right));
+  if (map[right.y][right.x] === label && !visited.has(`${right.x}|${right.y}`)) shape.push(...findRegion(right));
 
   // console.log({ label, up, down, left, right });
 
@@ -94,7 +94,7 @@ function drawRegion(region: Region) {
 
 for (let x = 0; x < dims.x; x++) {
   for (let y = 0; y < dims.y; y++) {
-    if (!visited.includes(`${x}|${y}`)) {
+    if (!visited.has(`${x}|${y}`)) {
       const label = map[y][x];
       const found = findRegion({ x, y });
 
