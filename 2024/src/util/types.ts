@@ -49,6 +49,14 @@ export class Vector {
     return this;
   }
 
+  /** Set this vector to the values of another Vector/Point */
+  set(vec: Vector | Point): Vector {
+    this.x = vec.x;
+    this.y = vec.y;
+
+    return this;
+  }
+
   /** Clone the vector - usually before use in a math operation */
   clone(): Vector {
     return new Vector(this.x, this.y);
