@@ -2,6 +2,7 @@ import { readFileSync } from 'fs';
 import { join } from 'path';
 import { Point } from '../util/types';
 import { stdout } from 'process';
+import { mod } from '../util/utils';
 
 const data = readFileSync(join(__dirname, 'input.txt')).toString();
 const lines = data.trim().split('\n');
@@ -23,11 +24,6 @@ lines.forEach((l) => {
 
 const dims: Point = robots.length < 15 ? { x: 11, y: 7 } : { x: 101, y: 103 };
 const center = { x: Math.floor(dims.x / 2), y: Math.floor(dims.y / 2) };
-
-// Mod for negative number, from https://stackoverflow.com/a/17323608/2303432
-function mod(n, m) {
-  return ((n % m) + m) % m;
-}
 
 function drawMap() {
   const map = Array.from({ length: dims.y }, () => Array(dims.x).fill(0));

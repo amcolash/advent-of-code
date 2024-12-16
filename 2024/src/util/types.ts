@@ -57,6 +57,11 @@ export class Vector {
     return this;
   }
 
+  /** Check if numberically equal to another vector/point */
+  eq(vec: Vector | Point): boolean {
+    return this.x === vec.x && this.y === vec.y;
+  }
+
   /** Clone the vector - usually before use in a math operation */
   clone(): Vector {
     return new Vector(this.x, this.y);
@@ -70,4 +75,12 @@ export class Vector {
   toString() {
     return `[${this.x}, ${this.y}]`;
   }
+}
+
+export function add(vec1: Vector | Point, vec2: Vector | Point): Point {
+  return { x: vec1.x + vec2.x, y: vec1.y + vec2.y };
+}
+
+export function pretty(point: Point): string {
+  return `[${point.x}, ${point.y}]`;
 }
