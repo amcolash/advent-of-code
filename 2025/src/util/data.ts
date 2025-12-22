@@ -10,8 +10,8 @@ const options = { headers: { Cookie: `session=${sessionCookie}` } };
 const turndownService = new turndown({ headingStyle: 'atx', codeBlockStyle: 'fenced' });
 
 export const getData = async (day: number) => {
-  const dayUrl = `https://adventofcode.com/2024/day/${day}`;
-  const inputUrl = `https://adventofcode.com/2024/day/${day}/input`;
+  const dayUrl = `https://adventofcode.com/2025/day/${day}`;
+  const inputUrl = `https://adventofcode.com/2025/day/${day}/input`;
 
   const data = await (await fetch(dayUrl, options)).text();
   const dom = new JSDOM(data);
