@@ -1,6 +1,7 @@
 {
-  "github.copilot.editor.enableAutoCompletions": false,
   "editor.formatOnSave": true,
   "editor.defaultFormatter": "esbenp.prettier-vscode",
-  "terminal.integrated.cwd": "2024"
+  "terminal.integrated.cwd": "2024",
+  "github.copilot.nextEditSuggestions.enabled": false,
+  "github.copilot.nextEditSuggestions.fixes": false
 }
