@@ -1,3 +1,5 @@
+import { Neighbors, Point, PointWithValue } from './types';
+
 // Mod for negative number, from https://stackoverflow.com/a/17323608/2303432
 export function mod(n, m) {
   return ((n % m) + m) % m;
@@ -87,4 +89,30 @@ export function iterateGrid<T>(grid: T[][], callback: (x: number, y: number, val
 
 export function createEmptyGrid<T>(width: number, height: number, value?: T): T[][] {
   return Array.from({ length: height }, () => Array(width).fill(value || undefined));
+}
+
+export function printGrid<T>(grid: T[][]) {
+  for (let y = 0; y < grid.length; y++) {
+    console.log(grid[y].join(''));
+  }
+}
+
+export function getPointWithValue<T>(x: number, y: number, grid: T[][]): PointWithValue<T | undefined> {
+  return { x, y, value: grid[y] ? grid[y][x] : undefined };
+}
+
+export function getNeighborCells<T>(point: Point, grid: T[][]): Neighbors<T> {
+  const neighbors: Neighbors<T> = {};
+
+  neighbors.N = getPointWithValue(point.x, point.y - 1, grid);
+  neighbors.S = getPointWithValue(point.x, point.y + 1, grid);
+  neighbors.E = getPointWithValue(point.x + 1, point.y, grid);
+  neighbors.W = getPointWithValue(point.x - 1, point.y, grid);
+
+  neighbors.NE = getPointWithValue(point.x + 1, point.y - 1, grid);
+  neighbors.NW = getPointWithValue(point.x - 1, point.y - 1, grid);
+  neighbors.SE = getPointWithValue(point.x + 1, point.y + 1, grid);
+  neighbors.SW = getPointWithValue(point.x - 1, point.y + 1, grid);
+
+  return neighbors;
 }

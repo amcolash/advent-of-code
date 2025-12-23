@@ -3,6 +3,22 @@ export type Point = {
   y: number;
 };
 
+export type PointWithValue<T> = Point & {
+  value: T;
+};
+
+export type Neighbors<T> = {
+  N?: PointWithValue<T>;
+  S?: PointWithValue<T>;
+  E?: PointWithValue<T>;
+  W?: PointWithValue<T>;
+
+  NE?: PointWithValue<T>;
+  NW?: PointWithValue<T>;
+  SE?: PointWithValue<T>;
+  SW?: PointWithValue<T>;
+};
+
 export class Vector {
   x: number;
   y: number;
