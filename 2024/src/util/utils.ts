@@ -34,7 +34,11 @@ export function shuffle<T>(array: T[]) {
 }
 
 /** Iterate each item in an array of strings */
-export function iterate2DString(lines: string[], callback: (x: number, y: number, value: string) => void, separator?: string) {
+export function iterate2DString(
+  lines: string[],
+  callback: (x: number, y: number, value: string) => void,
+  separator?: string
+) {
   for (let y = 0; y < lines.length; y++) {
     const row = lines[y].split(separator || '');
     for (let x = 0; x < row.length; x++) {

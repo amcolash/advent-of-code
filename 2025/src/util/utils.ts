@@ -18,6 +18,10 @@ export function color(str: string, color: (typeof Color)[keyof typeof Color]): s
   return `\x1b[${color}m${str}\x1b[0m`;
 }
 
+export function bold(str: string): string {
+  return `\x1b[1m${str}\x1b[0m`;
+}
+
 /** Shuffle an array in place */
 export function shuffle<T>(array: T[]) {
   let currentIndex = array.length;
@@ -34,7 +38,11 @@ export function shuffle<T>(array: T[]) {
 }
 
 /** Iterate each item in an array of strings */
-export function iterate2DString(lines: string[], callback: (x: number, y: number, value: string) => void, separator?: string) {
+export function iterate2DString(
+  lines: string[],
+  callback: (x: number, y: number, value: string) => void,
+  separator?: string
+) {
   for (let y = 0; y < lines.length; y++) {
     const row = lines[y].split(separator || '');
     for (let x = 0; x < row.length; x++) {
