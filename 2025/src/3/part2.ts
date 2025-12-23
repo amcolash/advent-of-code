@@ -2,22 +2,17 @@ import { readFileSync } from 'fs';
 import { join } from 'path';
 import { bold, Color, color } from '../util/utils';
 
-function sliceMax(array: number[], i: number, min: number): number[] {
-  const index = array.indexOf(i);
+// Slice array to largest starting number, while ensuring that the array still has at least the min length required
+function sliceMax(array: number[], min: number): number[] {
+  for (let i = 9; i > 0; i--) {
+    const index = array.indexOf(i);
 
-  if (index >= 0 && array.length - index >= min) {
-    return array.slice(index);
+    if (index >= 0 && array.length - index >= min) {
+      return array.slice(index);
+    }
   }
 
   return [];
-}
-
-function removeSmallest(array: number[]): number[] {
-  const sorted = [...array].sort();
-  const smallest = array.indexOf(sorted[0]);
-  array.splice(smallest, 1);
-
-  return array;
 }
 
 function getHighlightedString(bank: number[], valString: string): string {
@@ -45,26 +40,19 @@ const batteries = 12;
 let total = 0;
 
 banks.forEach((bank) => {
-  let subarray;
-  for (let i = 9; i > 0; i--) {
-    subarray = sliceMax(bank, i, batteries);
-    if (subarray.length >= batteries) break;
+  let largest = [];
+  let temp = [...bank];
+
+  for (let i = 0; i < batteries; i++) {
+    temp = sliceMax(i === 0 ? temp : temp.slice(1), batteries - i);
+    largest.push(temp[0]);
   }
 
-  let removed = [...subarray];
+  const valString = largest.join('');
+  console.log(getHighlightedString(bank, valString), valString);
 
-  while (removed.length > batteries) {
-    removed = removeSmallest(removed);
-  }
-
-  const valString = removed.toString().replace(/,/g, '');
-  const value = Number.parseInt(valString);
-  total += value;
-
-  console.log(getHighlightedString(bank, valString), value);
+  total += Number.parseInt(valString);
 });
-
-// 169679529983660 is too low
 
 console.log();
 console.log(total);
