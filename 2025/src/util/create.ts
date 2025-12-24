@@ -10,9 +10,12 @@ const dir = join(__dirname, '../', day);
 const templateFile = join(__dirname, 'template.ts');
 const template = readFileSync(templateFile).toString();
 
-console.log(`Creating files for day ${day}`);
-
-if (!existsSync(dir)) mkdirSync(dir);
+if (!existsSync(dir)) {
+  mkdirSync(dir);
+  console.log(`Creating files for day ${day}`);
+} else {
+  console.log(`Updating files for day ${day}`);
+}
 
 const part1 = join(dir, 'part1.ts');
 const part2 = join(dir, 'part2.ts');
