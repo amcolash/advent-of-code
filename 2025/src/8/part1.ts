@@ -1,19 +1,17 @@
 import { readFileSync } from 'fs';
 import { join } from 'path';
 import { Vector3 } from '../util/types';
-import { inspect } from 'util';
 
 let file = 'sample1.txt';
-// file = 'input.txt';
+file = 'input.txt';
 
 const data = readFileSync(join(__dirname, file)).toString();
 const lines = data.trim().split('\n');
 
-const iterations = file === 'sample1.txt' ? 15 : 1000;
+const iterations = file === 'sample1.txt' ? 10 : 1000;
 
 class Box extends Vector3 {
   id: number;
-  connections: Set<number> = new Set();
 
   constructor(x: number, y: number, z: number, id: number) {
     super(x, y, z);
@@ -21,16 +19,16 @@ class Box extends Vector3 {
   }
 
   toString() {
-    return `#${this.id}\t- ${super.toString()}:\t[${[...this.connections]}]`;
+    return `#${this.id}\t- ${super.toString()}`;
   }
 }
+
+let circuits: Array<Set<number>> = [];
 
 const boxes: Box[] = lines.map((l, i) => {
   const [x, y, z] = l.split(',').map((n) => Number.parseInt(n));
   return new Box(x, y, z, i + 1);
 });
-
-// console.log(boxes.map((b) => b.toString()));
 
 const computed = {};
 const distances: { dist: number; b1: Box; b2: Box }[] = [];
@@ -57,69 +55,37 @@ distances.sort((a, b) => a.dist - b.dist);
 for (let i = 0; i < iterations; i++) {
   const { b1, b2 } = distances[i];
 
-  b1.connections.add(b2.id);
-  b2.connections.add(b1.id);
+  const c1 = circuits.findIndex((c) => c.has(b1.id));
+  const c2 = circuits.findIndex((c) => c.has(b2.id));
 
-  console.log('Connecting', b1.id, b2.id);
-}
+  let circuit;
+  if (c1 >= 0 && c2 >= 0) {
+    // console.log('--Found circuits that need to merge--');
+    circuit = circuits[c1].union(circuits[c2]);
+    circuits.push(circuit);
 
-const circuits: Set<number>[] = [];
-for (let i = 0; i < boxes.length; i++) {
-  const box = boxes[i];
+    circuits[c1] = undefined;
+    circuits[c2] = undefined;
 
-  let circuit = circuits.find((c) => {
-    if (c.has(box.id)) return true;
+    circuits = circuits.filter((c) => c);
+  }
 
-    const connections = [...box.connections];
-    for (let j = 0; j < connections.length; j++) {
-      if (c.has(connections[j])) return true;
-    }
-  });
-
+  if (!circuit) circuit = circuits[c1] || circuits[c2];
   if (!circuit) {
     circuit = new Set();
     circuits.push(circuit);
   }
 
-  // console.log(box);
+  circuit.add(b1.id);
+  circuit.add(b2.id);
 
-  circuit.add(box.id);
-  const connections = [...box.connections];
-  for (let c = 0; c < connections.length; c++) {
-    circuit.add(connections[c]);
-  }
+  // b1.connections.add(b2.id);
+  // b2.connections.add(b1.id);
+
+  // console.log('Connecting', b1.id, b2.id);
 }
 
 circuits.sort((a, b) => b.size - a.size);
-console.log(circuits);
+// console.log(circuits);
 
-// console.log(circuits[0].size * circuits[1].size * circuits[2].size);
-
-// 30888 is too low
-
-// const errors = [30, 34, 43, 44, 54];
-// const errors = [30, 97, 432];
-
-let map = {};
-for (let i = 0; i < circuits.length; i++) {
-  const connections = [...circuits[i]];
-
-  for (let j = 0; j < connections.length; j++) {
-    map[connections[j]] = map[connections[j]] || 0;
-    map[connections[j]]++;
-  }
-}
-
-// console.log(boxes.filter((b) => errors.includes(b.id)).join('\n'));
-
-console.log(Object.fromEntries(Object.entries(map).filter((m) => m[1] > 1)));
-
-// console.log(
-//   circuits.filter((c) => {
-//     for (let i = 0; i < errors.length; i++) {
-//       if (c.has(errors[i])) return true;
-//     }
-
-//     return false;
-//   })
-// );
+console.log(circuits[0].size * circuits[1].size * circuits[2].size);
