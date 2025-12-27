@@ -43,6 +43,14 @@ export class Vector {
     return new Vector(point.x, point.y);
   }
 
+  static fromArray(arr: number[]) {
+    return new Vector(arr[0], arr[1]);
+  }
+
+  static fromString(str: string, separator: string = ',') {
+    return Vector.fromArray(str.split(separator).map((n) => Number.parseInt(n)));
+  }
+
   /** Adds vectors (modifies the original vector) */
   add(vec: Vector | Point): Vector {
     this.x += vec.x;
@@ -83,6 +91,11 @@ export class Vector {
   /** Squared distance between this vector and another */
   squaredLength(vec: Vector | Point): number {
     return Math.pow(this.x - vec.x, 2) + Math.pow(this.y - vec.y, 2);
+  }
+
+  /** Calculate the area of a rectangle made between this vector and another */
+  area(vec: Vector | Point): number {
+    return (Math.abs(this.x - vec.x) + 1) * (Math.abs(this.y - vec.y) + 1);
   }
 
   /** Set this vector to the values of another Vector/Point */
