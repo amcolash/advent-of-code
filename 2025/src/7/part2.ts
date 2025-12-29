@@ -1,6 +1,6 @@
 import { readFileSync } from 'fs';
 import { join } from 'path';
-import { buildStringGrid, printGrid } from '../util/utils';
+import { buildStringGrid, printGrid } from '../util/grid';
 
 const data = readFileSync(join(__dirname, 'sample1.txt')).toString();
 const lines = data.trim().split('\n');

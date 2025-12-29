@@ -1,7 +1,8 @@
 import { readFileSync } from 'fs';
 import { join } from 'path';
 import { Point, Vector } from '../util/types';
-import { Color, color, createEmptyGrid, printGrid } from '../util/utils';
+import { Color, color } from '../util/utils';
+import { createEmptyGrid, printGrid } from '../util/grid';
 
 const data = readFileSync(join(__dirname, 'sample1.txt')).toString();
 const lines = data.trim().split('\n');

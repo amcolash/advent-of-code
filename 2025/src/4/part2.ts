@@ -1,14 +1,7 @@
 import { readFileSync } from 'fs';
 import { join } from 'path';
-import {
-  buildStringGrid,
-  Color,
-  color,
-  getNeighborCells,
-  getPointWithValue,
-  iterateGrid,
-  printGrid,
-} from '../util/utils';
+import { Color, color } from '../util/utils';
+import { buildStringGrid, getNeighborCells, getPointWithValue, iterateGrid, printGrid } from '../util/grid';
 import { PointWithValue } from '../util/types';
 
 const data = readFileSync(join(__dirname, 'input.txt')).toString();
