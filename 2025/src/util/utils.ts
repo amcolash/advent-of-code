@@ -1,5 +1,3 @@
-import { Neighbors, Point, PointWithValue } from './types';
-
 // Mod for negative number, from https://stackoverflow.com/a/17323608/2303432
 export function mod(n, m) {
   return ((n % m) + m) % m;
@@ -37,4 +35,8 @@ export function shuffle<T>(array: T[]) {
     // And swap it with the current element.
     [array[currentIndex], array[randomIndex]] = [array[randomIndex], array[currentIndex]];
   }
+}
+
+export function randInRange(min: number, max: number): number {
+  return Math.floor(Math.random() * (max - min + 1)) + min;
 }
